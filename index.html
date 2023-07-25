@@ -59,43 +59,30 @@
     </div>
 
     <script>
+        const weekData = [
+            "1,02/01/2023,07/01/2023",
+            "2,09/01/2023,14/01/2023",
+            "3,16/01/2023,21/01/2023",
+            "4,23/01/2023,28/01/2023",
+            "5,30/01/2023,04/02/2023",
+            // Adicione as demais semanas e datas aqui
+        ];
+
         function getWeekDates() {
             const weekNumberInput = document.getElementById('weekNumber');
             const weekNumber = parseInt(weekNumberInput.value);
 
-            if (isNaN(weekNumber) || weekNumber < 1 || weekNumber > 53) {
-                alert('Por favor, insira um número de semana válido (1 a 53).');
+            if (isNaN(weekNumber) || weekNumber < 1 || weekNumber > weekData.length) {
+                alert('Por favor, insira um número de semana válido (1 a ' + weekData.length + ').');
                 return;
             }
 
-            const date = getStartDateOfWeek(weekNumber);
-
-            const startDate = formatDate(date.start);
-            const endDate = formatDate(date.end);
+            const weekInfo = weekData[weekNumber - 1].split(',');
+            const startDate = weekInfo[1];
+            const endDate = weekInfo[2];
 
             const resultElement = document.getElementById('result');
             resultElement.textContent = `Felipão, a Semana ${weekNumber} começa de ${startDate} até ${endDate}.`;
-        }
-
-        function getStartDateOfWeek(weekNumber) {
-            const date = new Date();
-            const januaryFirst = new Date(date.getFullYear(), 0, 1);
-            const daysOffset = januaryFirst.getDay() > 0 ? januaryFirst.getDay() - 1 : 6; // Sunday is 0, Monday is 1, etc.
-
-            const startDate = new Date(januaryFirst);
-            startDate.setDate(januaryFirst.getDate() - daysOffset + (7 * (weekNumber - 1)));
-
-            const endDate = new Date(startDate);
-            endDate.setDate(startDate.getDate() + 6);
-
-            return { start: startDate, end: endDate };
-        }
-
-        function formatDate(date) {
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const year = String(date.getFullYear()).substr(-2);
-            return `${day}/${month}/${year}`;
         }
     </script>
 </body>
